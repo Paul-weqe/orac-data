@@ -1,0 +1,12 @@
+{
+ "vrfId": 0,
+ "vrfName": "default",
+ "tableVersion": 4,
+ "routerId": "1.1.1.1",
+ "defaultLocPrf": 100,
+ "localAS": 65100,
+ "routes": { "1.1.1.1/32": [{"valid":true,"bestpath":true,"selectionReason":"First path received","pathFrom":"external","prefix":"1.1.1.1","prefixLen":32,"network":"1.1.1.1/32","version":1,"metric":0,"weight":32768,"peerId":"(unspec)","path":"","origin":"IGP","nexthops":[{"ip":"0.0.0.0","hostname":"rt1","afi":"ipv4","used":true}]}]
+,"2.2.2.2/32": [{"valid":true,"bestpath":true,"selectionReason":"AS Path","pathFrom":"external","prefix":"2.2.2.2","prefixLen":32,"network":"2.2.2.2/32","version":2,"metric":0,"weight":0,"peerId":"10.0.1.2","path":"65101","origin":"IGP","nexthops":[{"ip":"10.0.1.2","hostname":"rt2","afi":"ipv4","used":true}]},{"valid":true,"pathFrom":"external","prefix":"2.2.2.2","prefixLen":32,"network":"2.2.2.2/32","version":2,"weight":0,"peerId":"10.0.2.3","path":"65000 65101","origin":"IGP","nexthops":[{"ip":"10.0.2.3","hostname":"rt3","afi":"ipv4","used":true}]}]
+,"3.3.3.3/32": [{"valid":true,"bestpath":true,"selectionReason":"First path received","pathFrom":"external","prefix":"3.3.3.3","prefixLen":32,"network":"3.3.3.3/32","version":3,"metric":0,"weight":0,"peerId":"10.0.2.3","path":"65000","origin":"IGP","nexthops":[{"ip":"10.0.2.3","hostname":"rt3","afi":"ipv4","used":true}]}]
+,"4.4.4.4/32": [{"valid":true,"bestpath":true,"selectionReason":"First path received","pathFrom":"external","prefix":"4.4.4.4","prefixLen":32,"network":"4.4.4.4/32","version":4,"weight":0,"peerId":"10.0.1.2","path":"65101 65000","origin":"IGP","nexthops":[{"ip":"10.0.1.2","hostname":"rt2","afi":"ipv4","used":true}]}]
+ } , "totalRoutes": 4, "totalPaths": 5 } 
