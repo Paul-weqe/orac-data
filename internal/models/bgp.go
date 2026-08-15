@@ -7,10 +7,10 @@ type FRRRoutesResponse struct {
 }
 
 type FRRPath struct {
-	Balid           bool   `json:"valid"`
+	Valid           bool   `json:"valid"`
 	Bestpath        bool   `json:"bestpath"`
 	SelectionReason string `json:"selectionReason,omitempty"`
-	Pathfrom        string `json:"pathFrom,omitempty"`
+	PathFrom        string `json:"pathFrom,omitempty"`
 	Prefix          string `json:"prefix"`
 	PrefixLen       int    `json:"prefixLen"`
 	Network         string `json:"network"`
@@ -59,12 +59,21 @@ type BGPData struct {
 	Routes         []UnifiedRoute            `json:"Routes"`
 	RoutesByPrefix map[string][]UnifiedRoute `json:"routesByPrefix"`
 	BestRoutes     map[string]UnifiedRoute   `json:"bestRoutes"`
-	Stats          struct {
-		UniquePrefixes     int         `json:"uniquePrefixes"`
-		TotalPaths         int         `json:"totalPaths"`
-		AverageASPathLen   float64     `json:"averageASPathLen"`
-		MaxASPathLen       int         `json:"maxAsPathLen"`
-		PrefixDistribution map[int]int `json:"prefixDistribution"`
-		UniqueASNs         []int       `json:"uniqueASNs"`
-	} `json:"stats"`
+	Stats          BGPStats                  `json:"stats"`
+}
+
+// BGPStats holds statistical information about BGP data
+type BGPStats struct {
+	// Basic counts
+	UniquePrefixes int `json:"uniquePrefixes"`
+	TotalPaths     int `json:"totalPaths"`
+
+	// AS Path statistics
+	AverageASPathLen float64 `json:"averageASPathLen"`
+	MaxASPathLen     int     `json:"maxASPathLen"`
+
+	// Distribution
+	PrefixDistribution map[int]int `json:"prefixDistribution"`
+
+	UniqueASNs []int `json:"uniqueASNs"`
 }
