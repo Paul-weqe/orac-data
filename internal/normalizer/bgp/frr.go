@@ -1,4 +1,5 @@
-package normalizer
+// orac-data/internal/normalizer/bgp
+package bgp
 
 import (
 	"encoding/json"
@@ -18,7 +19,7 @@ func NewFRRNormalizer() *FRRNormalizer {
 }
 
 func (n *FRRNormalizer) Normalize(rawJSON []byte) (*models.BGPData, error) {
-	var frrResp models.FRRRoutesResponse
+	var frrResp models.FRRBGPRoutesResponse
 	if err := json.Unmarshal(rawJSON, &frrResp); err != nil {
 		return nil, fmt.Errorf("failed to parse FRR JSON %w", err)
 	}
@@ -26,7 +27,7 @@ func (n *FRRNormalizer) Normalize(rawJSON []byte) (*models.BGPData, error) {
 	return n.convertFRRToUnified(&frrResp), nil
 }
 
-func (n *FRRNormalizer) convertFRRToUnified(frrResp *models.FRRRoutesResponse) *models.BGPData {
+func (n *FRRNormalizer) convertFRRToUnified(frrResp *models.FRRBGPRoutesResponse) *models.BGPData {
 	// Prepare data structures.
 	allRoutes := make([]models.UnifiedRoute, 0, frrResp.TotalPaths)
 	routesByPrefix := make(map[string][]models.UnifiedRoute)
@@ -61,7 +62,7 @@ func (n *FRRNormalizer) convertFRRToUnified(frrResp *models.FRRRoutesResponse) *
 	return data
 }
 
-func (n *FRRNormalizer) convertFRRPathToUnified(cidr string, frrPath *models.FRRPath) models.UnifiedRoute {
+func (n *FRRNormalizer) convertFRRPathToUnified(cidr string, frrPath *models.FRRBGPPath) models.UnifiedRoute {
 	asPath, asPathStr, asPathLen := n.parseASPath(frrPath.Path)
 
 	nextHop, nextHopHostname, addressFamily := n.extractNextHop(frrPath)
@@ -125,7 +126,7 @@ func (n *FRRNormalizer) parseASPath(pathStr string) ([]int, string, int) {
 	return asPath, pathStr, len(asPath)
 }
 
-func (n *FRRNormalizer) extractNextHop(frrPath *models.FRRPath) (ip, hostname, afi string) {
+func (n *FRRNormalizer) extractNextHop(frrPath *models.FRRBGPPath) (ip, hostname, afi string) {
 	if len(frrPath.Nexthops) == 0 {
 		return "", "", ""
 	}
@@ -135,7 +136,7 @@ func (n *FRRNormalizer) extractNextHop(frrPath *models.FRRPath) (ip, hostname, a
 	return nh.IP, nh.Hostname, nh.AFI
 }
 
-func (n *FRRNormalizer) extractVendorMetadata(frrPath *models.FRRPath) map[string]interface{} {
+func (n *FRRNormalizer) extractVendorMetadata(frrPath *models.FRRBGPPath) map[string]interface{} {
 	metadata := make(map[string]interface{})
 
 	if frrPath.SelectionReason != "" {
@@ -149,13 +150,13 @@ func (n *FRRNormalizer) extractVendorMetadata(frrPath *models.FRRPath) map[strin
 	}
 	if len(frrPath.Nexthops) > 1 {
 		// Store additional next-hops if multiple
-		addtionalNextHops := make([]map[string]interface{}, 0)
+		additionalNextHops := make([]map[string]interface{}, 0)
 		for i, nh := range frrPath.Nexthops {
 			if i == 0 {
 				continue
 			}
 
-			addtionalNextHops = append(addtionalNextHops, map[string]interface{}{
+			additionalNextHops = append(additionalNextHops, map[string]interface{}{
 				"ip":       nh.IP,
 				"hostname": nh.Hostname,
 				"afi":      nh.AFI,
@@ -163,8 +164,8 @@ func (n *FRRNormalizer) extractVendorMetadata(frrPath *models.FRRPath) map[strin
 			})
 		}
 
-		if len(addtionalNextHops) > 0 {
-			metadata["addtionalNextHops"] = addtionalNextHops
+		if len(additionalNextHops) > 0 {
+			metadata["additionalNextHops"] = additionalNextHops
 		}
 	}
 	return metadata

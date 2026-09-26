@@ -1,31 +1,48 @@
 package models
 
-type FRRRoutesResponse struct {
-	Routes      map[string][]FRRPath `json:"routes"`
-	TotalRoutes int                  `json:"totalRoutes"`
-	TotalPaths  int                  `json:"totalPaths"`
+import (
+	"orac-data/internal/models/bgp"
+	"orac-data/internal/models/iface"
+)
+
+type (
+	// bgp
+	FRRBGPPath           = bgp.FRRPath
+	FRRBGPRoutesResponse = bgp.FRRRoutesResponse
+
+	// interface
+	FRRInterfaceResponse = iface.FRRResponse
+	FRRInterface         = iface.FRRInterface
+	FRRInterfaceLib      = iface.FRRInterfaceLib
+	FRRInterfaceState    = iface.FRRInterfaceState
+)
+
+// ===== INTERFACE ======
+
+type InterfaceData struct {
+	Vendor           string                      `json:"vendor"`
+	Interfaces       []UnifiedInterface          `json:"interfaces"`
+	InterfacesByName map[string]UnifiedInterface `json:"interfacesByName"`
+	Stats            InterfaceStats              `json:"stats"`
 }
 
-type FRRPath struct {
-	Valid           bool   `json:"valid"`
-	Bestpath        bool   `json:"bestpath"`
-	SelectionReason string `json:"selectionReason,omitempty"`
-	PathFrom        string `json:"pathFrom,omitempty"`
-	Prefix          string `json:"prefix"`
-	PrefixLen       int    `json:"prefixLen"`
-	Network         string `json:"network"`
-	Version         int    `json:"version"`
-	Metric          int    `json:"metric"`
-	Weight          int    `json:"weight"`
-	PeerID          string `json:"peerId"`
-	Path            string `json:"path"`
-	Origin          string `json:"origin"`
-	Nexthops        []struct {
-		IP       string `json:"ip"`
-		Hostname string `json:"hostname,omitempty"`
-		AFI      string `json:"afi"`
-		Used     bool   `json:"used"`
-	} `json:"nexthops"`
+type UnifiedInterface struct {
+	Name       string `json:"name"`
+	VRF        string `json:"vrf"`
+	Index      int    `json:"index"`
+	MTU        int    `json:"mtu"`
+	MTU6       int    `json:"mtu6"`
+	Speed      int    `json:"speed"`
+	Metric     int    `json:"metric"`
+	MACAddress string `json:"macAddress"`
+
+	// Any extra info from the vendor
+	VendorMetadata map[string]interface{} `json:"vendorMetadata,omitempty"`
+}
+
+type InterfaceStats struct {
+	Total int            `json:"total"`
+	ByVRF map[string]int `json:"byVRF"`
 }
 
 // What our Normalizer should produce.
@@ -50,13 +67,14 @@ type UnifiedRoute struct {
 	VendorMetadata  map[string]interface{} `json:"vendorMetadata,omitempty"`
 }
 
-// Represents all BGP data from a device.
+// ==== BGP ====
+
 type BGPData struct {
 	Vendor         string                    `json:"vendor"`
 	Hostname       string                    `json:"hostname"`
 	TotalRoutes    int                       `json:"totalRoutes"`
 	TotalPaths     int                       `json:"totalPaths"`
-	Routes         []UnifiedRoute            `json:"Routes"`
+	Routes         []UnifiedRoute            `json:"routes"`
 	RoutesByPrefix map[string][]UnifiedRoute `json:"routesByPrefix"`
 	BestRoutes     map[string]UnifiedRoute   `json:"bestRoutes"`
 	Stats          BGPStats                  `json:"stats"`

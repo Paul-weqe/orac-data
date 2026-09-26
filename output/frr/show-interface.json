@@ -1,0 +1,75 @@
+{
+  "frr-interface:lib": {
+    "interface": [
+      {
+        "name": "eth1",
+        "vrf": "default",
+        "state": {
+          "if-index": 3,
+          "mtu": 1500,
+          "mtu6": 1500,
+          "speed": 10000,
+          "metric": 0,
+          "phy-address": "be:f3:a2:58:61:7e"
+        }
+      },
+      {
+        "name": "eth2",
+        "vrf": "default",
+        "state": {
+          "if-index": 5,
+          "mtu": 1500,
+          "mtu6": 1500,
+          "speed": 10000,
+          "metric": 0,
+          "phy-address": "b6:8d:91:9f:9d:e2"
+        }
+      },
+      {
+        "name": "lo",
+        "vrf": "default",
+        "state": {
+          "if-index": 1,
+          "mtu": 65536,
+          "mtu6": 65536,
+          "speed": 0,
+          "metric": 0,
+          "phy-address": "00:00:00:00:00:00"
+        }
+      }
+    ]
+  },
+  "frr-route-map:lib": {
+    "route-map": [
+      {
+        "name": "TEST_RMAP",
+        "entry": [
+          {
+            "sequence": 10,
+            "action": "permit",
+            "set-action": [
+              {
+                "action": "frr-bgp-route-map:set-community",
+                "rmap-set-action": {
+                  "frr-bgp-route-map:community-string": "65000:100"
+                }
+              },
+              {
+                "action": "frr-bgp-route-map:set-local-preference",
+                "rmap-set-action": {
+                  "frr-bgp-route-map:local-pref": "150"
+                }
+              },
+              {
+                "action": "set-metric",
+                "rmap-set-action": {
+                  "value": 50
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
