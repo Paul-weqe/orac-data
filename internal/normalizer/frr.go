@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"orac-smt-solver/internal/models"
+	"orac-data/internal/models"
 )
 
 type FRRNormalizer struct {
