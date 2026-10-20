@@ -21,7 +21,7 @@ func NewAdapterFactory() *AdapterFactory {
 	return &AdapterFactory{}
 }
 
-func (f *AdapterFactory) Create(vendor Vendor, config interface{}) (BGPAdapter, error) {
+func (f *AdapterFactory) Create(vendor Vendor, config interface{}) (NetworkAdapter, error) {
 	switch vendor {
 	case VendorFRR:
 		return f.createFRRAdapter(config)
@@ -31,7 +31,7 @@ func (f *AdapterFactory) Create(vendor Vendor, config interface{}) (BGPAdapter, 
 	}
 }
 
-func (f *AdapterFactory) createFRRAdapter(config interface{}) (BGPAdapter, error) {
+func (f *AdapterFactory) createFRRAdapter(config interface{}) (NetworkAdapter, error) {
 	cfg, ok := config.(*FRRConfig)
 
 	if !ok {

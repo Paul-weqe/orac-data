@@ -11,7 +11,7 @@ type (
 	FRRBGPRoutesResponse = bgp.FRRRoutesResponse
 
 	// interface
-	FRRInterfaceResponse = iface.FRRResponse
+	FRRInterfaceResponse = iface.FRRInterfaceResponse
 	FRRInterface         = iface.FRRInterface
 	FRRInterfaceLib      = iface.FRRInterfaceLib
 	FRRInterfaceState    = iface.FRRInterfaceState

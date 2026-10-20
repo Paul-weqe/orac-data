@@ -1,6 +1,6 @@
 package iface
 
-type FRRResponse struct {
+type FRRInterfaceResponse struct {
 	Lib FRRInterfaceLib `json:"frr-interface:lib"`
 }
 

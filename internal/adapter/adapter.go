@@ -4,7 +4,8 @@ import (
 	"context"
 )
 
-type BGPAdapter interface {
+type NetworkAdapter interface {
+	FetchInterfaces(ctx context.Context) (interface{}, error)
 	FetchRoutes(ctx context.Context) (interface{}, error)
 	FetchNeighbors(ctx context.Context) (interface{}, error)
 	Vendor() string

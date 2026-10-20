@@ -54,6 +54,11 @@ func (a *FRRAdapter) connect(ctx context.Context) error {
 	return nil
 }
 
+// Retrieves all the interface information.
+func (a *FRRAdapter) FetchInterfaces(ctx context.Context) (interface{}, error) {
+	return nil, fmt.Errorf("FetchInterfaces is not yet implemented - waiting for FRR proto definitions")
+}
+
 // FetchRoutes retrieves all BGP routers from FRR.
 func (a *FRRAdapter) FetchRoutes(ctx context.Context) (interface{}, error) {
 	if err := a.connect(ctx); err != nil {
