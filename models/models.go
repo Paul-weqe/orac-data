@@ -1,22 +1,5 @@
 package models
 
-import (
-	"orac-data/internal/models/bgp"
-	"orac-data/internal/models/iface"
-)
-
-type (
-	// bgp
-	FRRBGPPath           = bgp.FRRPath
-	FRRBGPRoutesResponse = bgp.FRRRoutesResponse
-
-	// interface
-	FRRInterfaceResponse = iface.FRRInterfaceResponse
-	FRRInterface         = iface.FRRInterface
-	FRRInterfaceLib      = iface.FRRInterfaceLib
-	FRRInterfaceState    = iface.FRRInterfaceState
-)
-
 // ===== INTERFACE ======
 
 type InterfaceData struct {

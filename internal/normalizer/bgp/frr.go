@@ -7,7 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"orac-data/internal/models"
+	bgpmodel "orac-data/internal/models/bgp"
+	"orac-data/models"
 )
 
 type FRRNormalizer struct {
@@ -19,7 +20,7 @@ func NewFRRNormalizer() *FRRNormalizer {
 }
 
 func (n *FRRNormalizer) Normalize(rawJSON []byte) (*models.BGPData, error) {
-	var frrResp models.FRRBGPRoutesResponse
+	var frrResp bgpmodel.FRRRoutesResponse
 	if err := json.Unmarshal(rawJSON, &frrResp); err != nil {
 		return nil, fmt.Errorf("failed to parse FRR JSON %w", err)
 	}
@@ -27,7 +28,7 @@ func (n *FRRNormalizer) Normalize(rawJSON []byte) (*models.BGPData, error) {
 	return n.convertFRRToUnified(&frrResp), nil
 }
 
-func (n *FRRNormalizer) convertFRRToUnified(frrResp *models.FRRBGPRoutesResponse) *models.BGPData {
+func (n *FRRNormalizer) convertFRRToUnified(frrResp *bgpmodel.FRRRoutesResponse) *models.BGPData {
 	// Prepare data structures.
 	allRoutes := make([]models.UnifiedRoute, 0, frrResp.TotalPaths)
 	routesByPrefix := make(map[string][]models.UnifiedRoute)
@@ -62,7 +63,7 @@ func (n *FRRNormalizer) convertFRRToUnified(frrResp *models.FRRBGPRoutesResponse
 	return data
 }
 
-func (n *FRRNormalizer) convertFRRPathToUnified(cidr string, frrPath *models.FRRBGPPath) models.UnifiedRoute {
+func (n *FRRNormalizer) convertFRRPathToUnified(cidr string, frrPath *bgpmodel.FRRPath) models.UnifiedRoute {
 	asPath, asPathStr, asPathLen := n.parseASPath(frrPath.Path)
 
 	nextHop, nextHopHostname, addressFamily := n.extractNextHop(frrPath)
@@ -126,7 +127,7 @@ func (n *FRRNormalizer) parseASPath(pathStr string) ([]int, string, int) {
 	return asPath, pathStr, len(asPath)
 }
 
-func (n *FRRNormalizer) extractNextHop(frrPath *models.FRRBGPPath) (ip, hostname, afi string) {
+func (n *FRRNormalizer) extractNextHop(frrPath *bgpmodel.FRRPath) (ip, hostname, afi string) {
 	if len(frrPath.Nexthops) == 0 {
 		return "", "", ""
 	}
@@ -136,7 +137,7 @@ func (n *FRRNormalizer) extractNextHop(frrPath *models.FRRBGPPath) (ip, hostname
 	return nh.IP, nh.Hostname, nh.AFI
 }
 
-func (n *FRRNormalizer) extractVendorMetadata(frrPath *models.FRRBGPPath) map[string]interface{} {
+func (n *FRRNormalizer) extractVendorMetadata(frrPath *bgpmodel.FRRPath) map[string]interface{} {
 	metadata := make(map[string]interface{})
 
 	if frrPath.SelectionReason != "" {
