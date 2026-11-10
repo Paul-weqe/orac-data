@@ -15,7 +15,7 @@ func NewFRRInterfaceNormalizer() *FRRInterfaceNormalizer {
 	return &FRRInterfaceNormalizer{}
 }
 
-// Converts an FRR interface response into unified InterfaceData.
+// Normalize converts an FRR interface response into unified InterfaceData.
 func (n *FRRInterfaceNormalizer) Normalize(resp *ifacemodel.FRRInterfaceResponse) (*models.InterfaceData, error) {
 	interfaces := make([]models.UnifiedInterface, 0, len(resp.Lib.Interface))
 	interfacesByName := make(map[string]models.UnifiedInterface, len(resp.Lib.Interface))
@@ -50,6 +50,7 @@ func (n *FRRInterfaceNormalizer) convertFRRInterfaceToUnified(frrIface *ifacemod
 	}
 }
 
+// TODO: Fetch vendor specific information.
 func (n *FRRInterfaceNormalizer) extractVendorMetadata(frrIface *ifacemodel.FRRInterface) map[string]interface{} {
 	// Currently no extra fields beyond what the unified model captures.
 	return nil

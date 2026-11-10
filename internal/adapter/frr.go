@@ -59,7 +59,6 @@ func (a *FRRAdapter) connect(ctx context.Context) error {
 	a.client = pb.NewNorthboundClient(conn)
 	a.isConnected = true
 
-	// TODO: initiate FRR client once we have the proto definitions
 	return nil
 }
 

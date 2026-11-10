@@ -13,4 +13,7 @@ require (
 	google.golang.org/grpc v1.83.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	github.com/Z3Prover/z3/src/api/go v0.0.0 // indirect
 )
+
+replace github.com/Z3Prover/z3/src/api/go => /home/waswa/projects/golang/z3/src/api/go
