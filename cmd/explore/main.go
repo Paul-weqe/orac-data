@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"log"
 
-	"orac-data/internal/adapter"
+	"github.com/Paul-weqe/orac-data/internal/adapter"
 
-	ifacemodel "orac-data/internal/models/iface"
-	ifacenorm "orac-data/internal/normalizer/iface"
+	ifacemodel "github.com/Paul-weqe/orac-data/internal/models/iface"
+	ifacenorm "github.com/Paul-weqe/orac-data/internal/normalizer/iface"
 )
 
 func main() {

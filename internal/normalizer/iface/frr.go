@@ -2,8 +2,8 @@
 package iface
 
 import (
-	ifacemodel "orac-data/internal/models/iface"
-	"orac-data/models"
+	ifacemodel "github.com/Paul-weqe/orac-data/internal/models/iface"
+	"github.com/Paul-weqe/orac-data/models"
 )
 
 // FRRInterfaceNormalizer converts FRR interface data into the unified format.

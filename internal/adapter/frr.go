@@ -7,8 +7,8 @@ import (
 	"io"
 	"strings"
 
-	"orac-data/internal/models/iface"
-	pb "orac-data/proto/frr"
+	"github.com/Paul-weqe/orac-data/internal/models/iface"
+	pb "github.com/Paul-weqe/orac-data/proto/frr"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

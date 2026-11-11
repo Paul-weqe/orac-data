@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	bgpmodel "orac-data/internal/models/bgp"
-	"orac-data/models"
+	bgpmodel "github.com/Paul-weqe/orac-data/internal/models/bgp"
+	"github.com/Paul-weqe/orac-data/models"
 )
 
 type FRRNormalizer struct {

@@ -1,4 +1,4 @@
-module orac-data
+module github.com/Paul-weqe/orac-data
 
 go 1.25.0
 
@@ -16,4 +16,4 @@ require (
 	github.com/Z3Prover/z3/src/api/go v0.0.0 // indirect
 )
 
-replace github.com/Z3Prover/z3/src/api/go => /home/waswa/projects/golang/z3/src/api/go
+replace github.com/Z3Prover/z3/src/api/go => ../z3/src/api/go
