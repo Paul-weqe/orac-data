@@ -6,45 +6,27 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Paul-weqe/orac-data/internal/adapter"
-
-	ifacemodel "github.com/Paul-weqe/orac-data/internal/models/iface"
-	ifacenorm "github.com/Paul-weqe/orac-data/internal/normalizer/iface"
+	internaladapter "github.com/Paul-weqe/orac-data/internal/adapter"
 )
 
 func main() {
-	factory := adapter.NewAdapterFactory()
-	a, err := factory.Create(adapter.VendorFRR, &adapter.FRRConfig{
-		Host: "localhost",
-		Port: 50051,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer a.Close()
-
 	ctx := context.Background()
 
-	// Fetch (typed)
-	rawIface, err := a.FetchInterfaces(ctx)
+	a := internaladapter.NewFRRAdapter("localhost", 50051)
+	defer a.Close()
+
+	if err := a.Connect(ctx); err != nil {
+		log.Fatalf("connect: %v", err)
+	}
+
+	raw, err := a.FetchInterfaces(ctx)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("fetch: %v", err)
 	}
 
-	// Type-assert to what FetchInterfaces returns
-	resp, ok := rawIface.(*ifacemodel.FRRInterfaceResponse)
-	if !ok {
-		log.Fatalf("unexpected type: %T", rawIface)
-	}
-
-	// Normalize
-	norm := ifacenorm.NewFRRInterfaceNormalizer()
-	data, err := norm.Normalize(resp)
+	pretty, err := json.MarshalIndent(raw, "", "  ")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("marshal: %v", err)
 	}
-
-	// Print unified output
-	pretty, _ := json.MarshalIndent(data, "", "  ")
 	fmt.Println(string(pretty))
 }

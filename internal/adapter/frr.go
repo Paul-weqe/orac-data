@@ -14,8 +14,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var _ NetworkAdapter = (*FRRAdapter)(nil)
-
 type FRRAdapter struct {
 	// Connection details.
 	host string
@@ -38,7 +36,7 @@ func NewFRRAdapter(host string, port int) *FRRAdapter {
 }
 
 // Establishes the gRPC connection to FRR.
-func (a *FRRAdapter) connect(ctx context.Context) error {
+func (a *FRRAdapter) Connect(ctx context.Context) error {
 	if a.isConnected {
 		return nil
 	}
@@ -65,7 +63,7 @@ func (a *FRRAdapter) connect(ctx context.Context) error {
 // Retrieves all the interface information.
 func (a *FRRAdapter) FetchInterfaces(ctx context.Context) (interface{}, error) {
 	// 1. Ensure Connected.
-	if err := a.connect(ctx); err != nil {
+	if err := a.Connect(ctx); err != nil {
 		return nil, err
 	}
 
@@ -113,7 +111,7 @@ func (a *FRRAdapter) FetchInterfaces(ctx context.Context) (interface{}, error) {
 
 // FetchRoutes retrieves all BGP routers from FRR.
 func (a *FRRAdapter) FetchRoutes(ctx context.Context) (interface{}, error) {
-	if err := a.connect(ctx); err != nil {
+	if err := a.Connect(ctx); err != nil {
 		return nil, err
 	}
 
@@ -123,7 +121,7 @@ func (a *FRRAdapter) FetchRoutes(ctx context.Context) (interface{}, error) {
 }
 
 func (a *FRRAdapter) FetchNeighbors(ctx context.Context) (interface{}, error) {
-	if err := a.connect(ctx); err != nil {
+	if err := a.Connect(ctx); err != nil {
 		return nil, err
 	}
 
